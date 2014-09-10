@@ -1,4 +1,4 @@
-# snComponents
+# SUI: The Suning User Interface Library
 
 ## 简介
 苏宁易购前端组件库
