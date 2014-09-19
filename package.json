@@ -1,22 +1,25 @@
 {
   "name": "sui",
   "version": "0.0.1",
-  "description": "苏宁易购前端组件库",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "readmeFilename": "README.md",
+  "description": "苏宁易购网购前端开发部通用组件库",
+  "homepage": "https://github.com/classicemi/sui",
+  "keywords": [
+    "sui"
+  ],
+  "author": "classicemi",
   "repository": {
     "type": "git",
     "url": "https://github.com/classicemi/sui.git"
   },
-  "author": "classicemi",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/classicemi/sui/issues"
+  "main": "./dist/sui.js",
+  "dependencies": {
+    "jquery": "*"
   },
-  "homepage": "https://github.com/classicemi/sui",
   "devDependencies": {
-    "gulp": "^3.8.8"
+    "grunt": "*",
+    "grunt-cli": "*",
+    "grunt-contrib-uglify": "^0.6.0",
+    "grunt-unwrap": "*"
   }
 }
