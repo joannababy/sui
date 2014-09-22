@@ -21,19 +21,19 @@ define(function(require, exports, module) {
 
     $.extend(Popup.prototype, {
 
-        // window layer
+        // 弹层
         node: null,
 
-        // mask layer
+        // 遮罩层
         mask: null,
 
-        // fixed positioning
+        // 是否fixed定位
         fixed: false,
 
-        // whether popup is displayed
+        // 是否显示弹层
         present: false,
 
-        // whether popup is removed
+        // 是否remove弹层
         removed: false,
 
         // classname
@@ -53,9 +53,11 @@ define(function(require, exports, module) {
             popup
                 .css('position', this.fixed ? 'fixed' : 'absolute')
                 .show();
+
+            this.reset();
         },
 
-        // prepare the layer
+        // 初始化弹层
         prepare: function() {
             var that = this;
             var popup = this._popup;
@@ -75,8 +77,115 @@ define(function(require, exports, module) {
                 }
                 this._ready = true;
             }
+        },
+
+        // 弹层定位
+        reset: function() {
+            var popup = this._popup,
+                $window = $(window),
+                $document = $(document),
+                fixed = this.fixed,
+                dl = fixed ? 0 : $document.scrollLeft(),
+                dt = fixed ? 0 : $document.scrollTop(),
+                ww = $window.width(),
+                wh = $window.height(),
+                ow = popup.width(),
+                oh = popup.height(),
+                left = (ww - ow) / 2 + dl,
+                top = (wh - oh) * 382 / 1000 + dt,
+                style = popup[0].style;
+
+            style.left = Math.max(parseInt(left), dl) + 'px';
+            style.top = Math.max(parseInt(top), dt) + 'px';
+        },
+
+        // 设置遮罩层
+        _mask: function() {
+            var that = this,
+                popup = this._popup,
+                mask = this._mask,
+                $window = $(window);
+
+            Popup.zIndex += 2;
+            this._top();
+
+            var maskCSS = {
+                position: _IE6 ? 'absolute' : 'fixed',
+                left: 0,
+                top: 0,
+                width: _IE6 ? $window.width() : '100%',
+                height: _IE6 ? $window.height() : '100%',
+                overflow: 'hidden',
+                opacity: 0
+            };
+        },
+
+        // event relavant methods
+        /**
+         * 获得时间缓存
+         * @param  {String} 事件类型
+         */
+        _getEventListener: function(type) {
+            var eventCache = this._eventCache;
+            eventCache = this._eventCache = eventCache ? eventCache : {};
+            eventCache[type] = eventCache[type] ? eventCache[type] : [];
+            return eventCache[type];
+        },
+
+        /**
+         * 分发事件
+         * @param  {String} 事件类型
+         */
+        _dispatchEvent: function(type) {
+            var eventCache = this._eventCache;
+            if (this['on' + type]) {
+                this['on' + type]();
+            }
+            for (var i = 0, len = eventCache.length; i < len; i++) {
+                eventCache[i].call(this);
+            }
+        },
+
+        // 触发按钮回调
+        _trigger: function(id) {
+
+        },
+
+        /**
+         * 增加事件监听函数
+         * @param {String}   事件类型
+         * @param {Function} cb   回调函数
+         */
+        addEventListener: function(type, cb) {
+            var eventCache = this.opt.eventCache;
+            if (!eventCache[type]) {
+                eventCache[type] = [];
+            }
+            eventCache[type].push(cb);
+            return this;
+        },
+
+        /**
+         * 移除事件监听函数
+         * @param  {String}   事件类型
+         * @param  {Function} cb   回调函数
+         */
+        removeEventListener: function(type, cb) {
+            var eventCache = this.opt.eventCache;
+            for (var i = 0, len = eventCache.length; i < len; i++) {
+                if (cb === eventCache[i]) {
+                    eventCache.splice(i--, 1);
+                }
+            }
+            return this;
         }
 
     });
+
+    Popup.zIndex = 8000;
+
+    Popup.current = null;
+
+    module.exports = Popup;
 
 });

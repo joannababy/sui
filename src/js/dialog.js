@@ -1,15 +1,15 @@
 define(function(require, exports, module) {
 
-    // jquery
     var $ = require('jquery');
+    var Popup = require('./popup');
 
-    // init time
+    // 初始化事件，用作给实例加id
     var initTime = new Date() - 0;
 
-    // dialog count
+    // 弹层数
     var count = 0;
 
-    // default options
+    // 默认配置
     var defaultOptions = {
 
         content: '',
@@ -50,8 +50,15 @@ define(function(require, exports, module) {
 
     };
 
+    var popup = function() {};
+    popup.prototype = Popup.prototype;
+    Dialog.prototype = new popup();
+
     function Dialog(options) {
         var that = this;
+        
+        // 继承Popup类自有属性
+        $.extend(this, new Popup());
 
         var opt = options || {};
         opt = $.extend(true, {}, defaultOptions, opt);
@@ -59,6 +66,8 @@ define(function(require, exports, module) {
         var dialogId = opt.dialogId = initTime + count;
         opt.def = defaultOptions;
         this.opt = opt;
+
+        this._popup.html(this.opt.innerHTML);
 
         if (this.opt.ok) {
             this.opt.button.push({
@@ -76,131 +85,29 @@ define(function(require, exports, module) {
             })
         }
 
-        this._popup = $('<div />').html(opt.innerHTML)
-            .css({
-                'display': 'none',
-                'position': 'absolute'
-            })
-            .appendTo('body');
+        // this._mask = $('<div />')
+        //     .css({
+        //         'display': 'none',
+        //         'position': 'fiexed',
+        //         'top': 0,
+        //         'left': 0,
+        //         'width': '100%',
+        //         'height': '100%',
+        //         'overflow': 'hidden'
+        //     });
 
-        this._mask = $('<div />')
-            .css({
-                'display': 'none',
-                'position': 'fiexed',
-                'top': 0,
-                'left': 0,
-                'width': '100%',
-                'height': '100%',
-                'overflow': 'hidden'
-            });
-
-        this._popup.find('.sui-dialog-close')
-            .css({
-                'display': this.opt.close === false ? 'none' : ''
-            })
-            .on('click', function(event) {
-                that.close().remove();
-            });
+        // this._popup.find('.sui-dialog-close')
+        //     .css({
+        //         'display': this.opt.close === false ? 'none' : ''
+        //     })
+        //     .on('click', function(event) {
+        //         that.close().remove();
+        //     });
     }
 
-    Dialog.prototype = {
+    $.extend(Dialog.prototype, {
 
-        // popup relavant methods
-        show: function() {
-            var that = this,
-                popup = this._popup,
-                mask = this._mask;
-
-            this.center();
-            popup.css({
-                'zIndex': ++Dialog.zIndex
-            }).show();
-
-            return this;
-
-        },
-
-        center: function() {
-            var popup = this._popup,
-                $window = $(window),
-                $document = $(document),
-                // position: fixed;时要加的偏移量
-                fixed = this.fixed,
-                dl = fixed ? 0 : $document.scrollLeft(),
-                dt = fixed ? 0 : $document.scrollTop(),
-                ww = $window.width(),
-                wh = $window.height(),
-                ow = popup.width(),
-                oh = popup.height(),
-                left = (ww - ow) / 2 + dl,
-                top = (wh - oh) * 382 / 1000 + dt, // 黄金比例
-                style = popup[0].style;
-
-            style.left = Math.max(parseInt(left), dl) + 'px';
-            style.top = Math.max(parseInt(top), dt) + 'px';
-        },
-
-        // event relavant methods
-        /**
-         * get event cache
-         * @param  {String} type event type
-         */
-        _getEventListener: function(type) {
-            var eventCache = this._eventCache;
-            eventCache = this._eventCache = eventCache ? eventCache : {};
-            eventCache[type] = eventCache[type] ? eventCache[type] : [];
-            return eventCache[type];
-        },
-
-        /**
-         * dispatch events
-         * @param  {String} type event type
-         */
-        _dispatchEvent: function(type) {
-            var eventCache = this._eventCache;
-            if (this['on' + type]) {
-                this['on' + type]();
-            }
-            for (var i = 0, len = eventCache.length; i < len; i++) {
-                eventCache[i].call(this);
-            }
-        },
-
-        // trigger button callback
-        _trigger: function(id) {
-
-        },
-
-        /**
-         * add event listener
-         * @param {String}   type event type
-         * @param {Function} cb   callback
-         */
-        addEventListener: function(type, cb) {
-            var eventCache = this.opt.eventCache;
-            if (!eventCache[type]) {
-                eventCache[type] = [];
-            }
-            eventCache[type].push(cb);
-            return this;
-        },
-
-        /**
-         * remove event listener
-         * @param  {String}   type event type
-         * @param  {Function} cb   callback
-         */
-        removeEventListener: function(type, cb) {
-            var eventCache = this.opt.eventCache;
-            for (var i = 0, len = eventCache.length; i < len; i++) {
-                if (cb === eventCache[i]) {
-                    eventCache.splice(i--, 1);
-                }
-            }
-            return this;
-        }
-
-    };
+    });
 
     // find dialog object
     Dialog.find = function(id) {
