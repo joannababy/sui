@@ -1,0 +1,56 @@
+.sui-dialog {
+  position: relative;
+  padding: 6px;
+  font-family: arial, tahoma, \5b8b\4f53;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.sui-dialog table {
+  border: 0 none;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.sui-dialog-header {
+  padding: 0;
+  border-bottom: 1px solid #ccc;
+  background-color: #eee;
+}
+
+.sui-dialog-close {
+  position: relative;
+  _position: absolute;
+  top: 0;
+  right: 2px;
+  float: right;
+  border: 0 none;
+  background: transparent;
+  font-size: 20px;
+  line-height: 24px;
+  color: #999;
+  cursor: pointer;
+}
+
+.sui-dialog-close:hover {
+  color: #666;
+}
+
+.sui-dialog-title {
+  padding: 5px 0 5px 10px;
+  font-weight: bold;
+}
+
+.sui-dialog-body {
+  padding: 30px 45px 50px;
+  text-align: center;
+  background-color: #fff;
+  border-bottom: dashed 1px #ccc;
+}
+
+.sui-dialog-content {
+  white-space: nowrap;
+}
+
+.sui-dialog-footer {
+  background-color: #fff;
+}
