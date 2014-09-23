@@ -15,11 +15,13 @@
         });
 
         seajs.use('dialog', function(dialog) {
-            
+
             var d = new dialog({
+                title: '测试标题',
                 content: '测试内容',
                 close: false,
-                okValue: 'test'
+                ok: true,
+                cancel: true
             });
             d.show();
 

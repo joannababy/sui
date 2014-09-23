@@ -54,7 +54,7 @@ define(function(require, exports, module) {
     var popup = function() {};
     popup.prototype = Popup.prototype;
     Dialog.prototype = new popup();
-    
+
     function Dialog(options) {
         var that = this;
 
@@ -66,25 +66,35 @@ define(function(require, exports, module) {
 
         var dialogId = opt.dialogId = initTime + count;
         opt.def = defaultOptions;
-        this.opt = opt;
+        // this.opt = opt;
 
-        this._popup.html(this.opt.innerHTML);
+        this._popup.html(opt.innerHTML);
 
-        if (this.opt.ok) {
-            this.opt.button.push({
+        if (opt.ok) {
+            opt.button.push({
                 id: 'ok',
-                value: this.opt.okValue,
-                callback: this.opt.ok
+                className: 'ok',
+                value: opt.okValue,
+                callback: opt.ok
             });
         }
 
-        if (this.opt.cancel) {
-            this.opt.button.push({
+        if (opt.cancel) {
+            opt.button.push({
                 id: 'cancel',
-                value: this.opt.cancelValue,
-                callback: this.opt.cancel
+                className: 'cancel',
+                value: opt.cancelValue,
+                callback: opt.cancel
             })
         }
+
+        $.each(opt, function(k, v) {
+            if (typeof that[k] === 'function') {
+                that[k](v);
+            } else {
+                that[k] = v;
+            }
+        });
 
         // this._mask = $('<div />')
         //     .css({
@@ -107,6 +117,65 @@ define(function(require, exports, module) {
     }
 
     $.extend(Dialog.prototype, {
+
+        /**
+         * 设置弹窗标题
+         * @param  {String} title 弹窗标题
+         */
+        title: function(title) {
+            this._find('title').html(title);
+            this.reset();
+            return this;
+        },
+
+        /**
+         * 设置弹窗内容
+         * @param  {String, HTMLElement} content 弹窗内容
+         */
+        content: function(content) {
+            this._find('content')
+                .empty()
+                [typeof content === 'object' ? 'append' : 'html'](content);
+            this.reset();
+
+            return this;
+        },
+
+        /**
+         * 设置按钮组
+         * @param  {Object} args 按钮组配置对象
+         */
+        button: function(args) {
+            var html = '';
+            $.each(args, function(k, v) {
+                html += '<button class="xdialog-button-' + v.className + '">' + v.value + '</button>';
+            });
+            this._find('button')[0].innerHTML += html;
+        },
+
+        /**
+         * 设置弹窗宽度
+         * @param  {Number|String} value 弹窗宽度
+         */
+        width: function(value) {
+            this._find('content').width(value);
+        },
+
+        /**
+         * 设置弹窗高度
+         * @param  {Number|String} value 弹窗高度
+         */
+        height: function(value) {
+            this._find('content').height(value);
+        },
+
+        /**
+         * 根据名称快速获得元素引用
+         * @param  {String} role 弹窗组成部分名称
+         */
+        _find: function(role) {
+            return this._popup.find('.sui-dialog-' + role);
+        }
 
     });
 

@@ -34,11 +34,6 @@ define(function(require, exports, module) {
             }
         },
 
-        // 触发按钮回调
-        _trigger: function(id) {
-
-        },
-
         /**
          * 增加事件监听函数
          * @param {String}   事件类型

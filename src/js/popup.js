@@ -36,6 +36,12 @@ define(function(require, exports, module) {
         // 遮罩层
         mask: null,
 
+        // 遮罩颜色
+        maskColor: '#000',
+
+        // 遮罩透明度
+        maskOpacity: '0.6',
+
         // 是否fixed定位
         fixed: false,
 
@@ -64,6 +70,8 @@ define(function(require, exports, module) {
                 .show();
 
             this.reset();
+            this._dispatchEvent('show');
+            return this;
         },
 
         // 初始化弹层
@@ -106,6 +114,8 @@ define(function(require, exports, module) {
 
             style.left = Math.max(parseInt(left), dl) + 'px';
             style.top = Math.max(parseInt(top), dt) + 'px';
+
+            return this;
         },
 
         // 设置遮罩层
@@ -127,67 +137,12 @@ define(function(require, exports, module) {
                 overflow: 'hidden',
                 opacity: 0
             };
+        },
+
+        // 触发按钮回调
+        _trigger: function(id) {
+
         }
-
-        // // event relavant methods
-        // /**
-        //  * 获得时间缓存
-        //  * @param  {String} 事件类型
-        //  */
-        // _getEventListener: function(type) {
-        //     var eventCache = this._eventCache;
-        //     eventCache = this._eventCache = eventCache ? eventCache : {};
-        //     eventCache[type] = eventCache[type] ? eventCache[type] : [];
-        //     return eventCache[type];
-        // },
-
-        // /**
-        //  * 分发事件
-        //  * @param  {String} 事件类型
-        //  */
-        // _dispatchEvent: function(type) {
-        //     var eventCache = this._eventCache;
-        //     if (this['on' + type]) {
-        //         this['on' + type]();
-        //     }
-        //     for (var i = 0, len = eventCache.length; i < len; i++) {
-        //         eventCache[i].call(this);
-        //     }
-        // },
-
-        // // 触发按钮回调
-        // _trigger: function(id) {
-
-        // },
-
-        // /**
-        //  * 增加事件监听函数
-        //  * @param {String}   事件类型
-        //  * @param {Function} cb   回调函数
-        //  */
-        // addEventListener: function(type, cb) {
-        //     var eventCache = this.opt.eventCache;
-        //     if (!eventCache[type]) {
-        //         eventCache[type] = [];
-        //     }
-        //     eventCache[type].push(cb);
-        //     return this;
-        // },
-
-        // /**
-        //  * 移除事件监听函数
-        //  * @param  {String}   事件类型
-        //  * @param  {Function} cb   回调函数
-        //  */
-        // removeEventListener: function(type, cb) {
-        //     var eventCache = this.opt.eventCache;
-        //     for (var i = 0, len = eventCache.length; i < len; i++) {
-        //         if (cb === eventCache[i]) {
-        //             eventCache.splice(i--, 1);
-        //         }
-        //     }
-        //     return this;
-        // }
 
     });
 
