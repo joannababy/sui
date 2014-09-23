@@ -10,7 +10,7 @@ define(function(require, exports, module) {
 
         // event relavant methods
         /**
-         * 获得时间缓存
+         * 获得事件缓存
          * @param  {String} 事件类型
          */
         _getEventListener: function(type) {
