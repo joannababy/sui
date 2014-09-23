@@ -50,13 +50,14 @@ define(function(require, exports, module) {
 
     };
 
+    // 继承Popup原型方法
     var popup = function() {};
     popup.prototype = Popup.prototype;
     Dialog.prototype = new popup();
-
+    
     function Dialog(options) {
         var that = this;
-        
+
         // 继承Popup类自有属性
         $.extend(this, new Popup());
 
