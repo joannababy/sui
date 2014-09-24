@@ -20,9 +20,12 @@
                 title: '测试标题',
                 content: '测试内容',
                 close: false,
-                ok: true,
+                ok: function() {
+                    alert('ok');
+                },
                 cancel: true
             });
+            console.log(d);
             d.show();
 
         });

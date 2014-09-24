@@ -146,9 +146,11 @@ define(function(require, exports, module) {
          * @param  {Object} args 按钮组配置对象
          */
         button: function(args) {
-            var html = '';
+            var html = '',
+                that = this;
             $.each(args, function(k, v) {
                 html += '<button class="xdialog-button-' + v.className + '">' + v.value + '</button>';
+                that.callbacks[val.id] = v.callback;
             });
             this._find('button')[0].innerHTML += html;
         },
@@ -167,6 +169,26 @@ define(function(require, exports, module) {
          */
         height: function(value) {
             this._find('content').height(value);
+        },
+
+        /**
+         * 设置关闭按钮
+         * @param  {Boolean} arg 是否显示关闭按钮
+         */
+        close: function(arg) {
+            this._find('close')
+                [arg ? 'show' : 'hide']();
+        },
+
+        /**
+         * 触发回调函数
+         * @param  {String} id 回调函数id
+         * @return {[type]}    [description]
+         */
+        _trigger: function(id) {
+            var cb = this.callbacks[id];
+            return typeof cb !== 'function' || cb.call(this) !== false ?
+                this.close().remove() : this;
         },
 
         /**
