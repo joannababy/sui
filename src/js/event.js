@@ -40,7 +40,7 @@ define(function(require, exports, module) {
          * @param {Function} cb   回调函数
          */
         addEventListener: function(type, cb) {
-            var eventCache = this.opt.eventCache;
+            var eventCache = this._eventCache;
             if (!eventCache[type]) {
                 eventCache[type] = [];
             }
@@ -54,7 +54,7 @@ define(function(require, exports, module) {
          * @param  {Function} cb   回调函数
          */
         removeEventListener: function(type, cb) {
-            var eventCache = this.opt.eventCache;
+            var eventCache = this._eventCache;
             for (var i = 0, len = eventCache.length; i < len; i++) {
                 if (cb === eventCache[i]) {
                     eventCache.splice(i--, 1);
@@ -64,6 +64,9 @@ define(function(require, exports, module) {
         }
 
     });
+    
+    // 派发事件函数别名
+    Event.prototype.emit = Event.prototype._dispatchEvent;
 
     module.exports = Event;
 
