@@ -96,6 +96,11 @@ define(function(require, exports, module) {
             }
         });
 
+        // 触发按钮回调
+        this._find('button').on('click', '[data-id]', function() {
+            that._trigger($(this).data('id'));
+        })
+
         // this._mask = $('<div />')
         //     .css({
         //         'display': 'none',
@@ -148,9 +153,12 @@ define(function(require, exports, module) {
         button: function(args) {
             var html = '',
                 that = this;
+                that.callbacks = {};
+
             $.each(args, function(k, v) {
-                html += '<button class="xdialog-button-' + v.className + '">' + v.value + '</button>';
-                that.callbacks[val.id] = v.callback;
+                v.id = v.id || v.value;
+                html += '<button type="button" data-id="' + v.id + '">' + v.value + '</button>';
+                that.callbacks[v.id] = v.callback;
             });
             this._find('button')[0].innerHTML += html;
         },
@@ -186,6 +194,7 @@ define(function(require, exports, module) {
          * @return {[type]}    [description]
          */
         _trigger: function(id) {
+            console.log(id);
             var cb = this.callbacks[id];
             return typeof cb !== 'function' || cb.call(this) !== false ?
                 this.close().remove() : this;

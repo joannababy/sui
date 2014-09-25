@@ -137,11 +137,6 @@ define(function(require, exports, module) {
                 overflow: 'hidden',
                 opacity: 0
             };
-        },
-
-        // 触发按钮回调
-        _trigger: function(id) {
-
         }
 
     });
