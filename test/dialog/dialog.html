@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Dialog Tests</title>
+    <link rel="stylesheet" type="text/css" href="../../src/css/dialog.css">
+    <link href="../../node_modules/mocha/mocha.css" type="text/css" rel="stylesheet" charset="utf-8">
+    <script type="text/javascript" src="../../lib/sea.js"></script>
+    <script type="text/javascript">
+        (function() {
+            var query = location.search.substring(1).split('&');
+            var srcdir = 'src';
+
+            seajs.config({
+                base: '../../lib/',
+                alias: {
+                    // 工具模块
+                    '$': 'jquery-1.10.2.js',
+                    'jquery': 'jquery-1.10.2.js',
+                    'mocha': '../../node_modules/mocha/mocha.js',
+                    'expect': '../../node_modules/expect.js/index.js',
+                    'sinon': '../../node_modules/sinon/lib/sinon.js',
+                    // 要测试的模块
+                    'dialog': resolve('dialog.js')
+                }
+            });
+
+            function getExt(file) {
+                return file.match(/\w*$/gi)[0];
+            }
+
+            function resolve(file) {
+                return seajs.resolve("../../" + srcdir + "/" + getExt(file) + '/' + file + '#');
+            }
+
+        })();
+
+        // seajs.use('dialog', function(dialog) {
+
+        //     var d = new dialog({
+        //         title: '测试标题',
+        //         content: '测试内容',
+        //         close: false,
+        //         ok: function() {
+        //             alert('ok');
+        //         },
+        //         cancel: true,
+        //         button: [{
+        //             value: '新增',
+        //             callback: function() {
+        //                 alert('ada');
+        //             }
+        //         }]
+        //     });
+        //     console.log(d);
+        //     d.show();
+
+        // });
+    </script>
+</head>
+<body>
+    <div id="mocha"></div>
+    <script type="text/javascript" src="../../node_modules/sinon/lib/sinon.js"></script>
+    <script type="text/javascript" src="../../node_modules/expect.js/index.js"></script>
+    <script>
+        (function() {
+            seajs.use('mocha', function() {
+                mocha.setup('bdd');
+                var tests = ['./dialog-test.js'];
+
+                seajs.use(tests, function() {
+                    if (window.mochaPhantomJS) {
+                        mochaPhantomJS.run();
+                    } else {
+                        mocha.run();
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

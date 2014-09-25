@@ -17,9 +17,11 @@
     "jquery": "*"
   },
   "devDependencies": {
+    "expect.js": "^0.3.1",
     "grunt": "*",
     "grunt-cli": "*",
     "grunt-contrib-uglify": "^0.6.0",
-    "grunt-unwrap": "*"
+    "mocha": "^1.21.4",
+    "sinon": "^1.10.3"
   }
 }
