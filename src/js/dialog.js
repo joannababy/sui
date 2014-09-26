@@ -88,6 +88,8 @@ define(function(require, exports, module) {
             })
         }
 
+        // 遍历opt，和dialog原型方法同名属性作为参数传入dialog原型方法
+        // 不同名属性加入dialog对象属性
         $.each(opt, function(k, v) {
             if (typeof that[k] === 'function') {
                 that[k](v);
