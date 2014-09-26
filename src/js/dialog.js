@@ -197,7 +197,7 @@ define(function(require, exports, module) {
             console.log(id);
             var cb = this.callbacks[id];
             return typeof cb !== 'function' || cb.call(this) !== false ?
-                this.close().remove() : this;
+                this.hide().destroy() : this;
         },
 
         /**

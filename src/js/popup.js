@@ -74,6 +74,23 @@ define(function(require, exports, module) {
             return this;
         },
 
+        // 隐藏弹层
+        hide: function() {
+            if (this.present) {
+                this._popup.hide();
+            }
+            return this;
+        },
+
+        // 销毁弹层
+        destroy: function() {
+            this._popup.remove();
+            for (var i in this) {
+                delete this[i];
+            }
+            return this;
+        },
+
         // 初始化弹层
         prepare: function() {
             var that = this;
