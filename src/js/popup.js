@@ -85,6 +85,9 @@ define(function(require, exports, module) {
         // 销毁弹层
         destroy: function() {
             this._popup.remove();
+            if (!_IE6) {
+                $(window).off('resize', this._onresize);
+            }
             for (var i in this) {
                 delete this[i];
             }
@@ -105,9 +108,10 @@ define(function(require, exports, module) {
                     popup.html(this.innerHTML);
                 }
                 if (!_IE6) {
-                    $(window).on('resize', function() {
+                    this._onresize = function() {
                         that.reset();
-                    });
+                    };
+                    $(window).on('resize', this._onresize);
                 }
                 this._ready = true;
             }
